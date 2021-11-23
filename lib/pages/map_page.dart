@@ -26,7 +26,15 @@ class MapSampleState extends State<MapSample> {
     target: _userPosition,
     zoom: 18,
   );
-
+  /* 
+    TODO: Find some way to pass the filtered data from the filter page to map page. 
+          Was thinking when they press Apply button from filter page it will send the data,
+          but couldn't find a way to do that without rendering that page I think.
+          
+          Make a new list of parking lots that fit the passed in filtered criteria
+          Pass that list to addMarkers() which will mark the filtered lots
+  */
+  
 
   static CameraPosition _kTargetPosition = CameraPosition(
     target: _targetPosition,

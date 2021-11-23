@@ -13,6 +13,7 @@ class FilterPageState extends State<FilterPage> {
   DateTime selectedDate = DateTime.now();
   double _sliderValue = 0;
   String? selectedTime;
+  String? lotSize;
 
   @override
   void initState() {
@@ -60,133 +61,172 @@ class FilterPageState extends State<FilterPage> {
       title: Text("Filters"),
     ),
     backgroundColor: Colors.grey[300],
-    body: Center(
-      child: Form(
-        key: formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(16),
-              child: MultiSelectFormField(
-                autovalidate: false,
-                title: Text("Decals"),
-                dataSource: const [
-                  {"display": "Red", "value": "Red"},
-                  {"display": "Orange", "value": "Orange"},
-                  {"display": "Green", "value": "Green"},
-                  {"display": "Park & Ride", "value": "Park & Ride"},
-                  {"display": "Motorcycle/Scooter", "value": "Motorcycle/Scooter"},
-                  {"display": "Brown", "value": "Brown"},
-                ],
-                textField: "display",
-                valueField: "value",
-                okButtonLabel: "OK",
-                cancelButtonLabel: "CANCEL",
-                hintWidget:
-                    const Text("Choose the decals to filter by"),
-                onSaved: (value) {
-                  setState(() {
-                    _decals = value;
-                  });
-                },
-              )
-            ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  "${selectedDate.toLocal()}".split(' ')[0],
-                  style: const TextStyle(
-                      fontSize: 30, 
-                      fontWeight: FontWeight.bold
-                  ),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                ElevatedButton(
-                  onPressed: () => _selectDate(context),
-                  child: const Text(
-                    "Select Date",
-                    style: TextStyle(
-                        color: Colors.black, 
+    body: SingleChildScrollView(
+      child: Center(
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(16),
+                child: MultiSelectFormField(
+                  autovalidate: false,
+                  title: Text("Decals"),
+                  dataSource: const [
+                    {"display": "Red", "value": "Red"},
+                    {"display": "Orange", "value": "Orange"},
+                    {"display": "Green", "value": "Green"},
+                    {"display": "Blue", "value": "Blue"},
+                    {"display": "Student Green", "value": "Student Green"},
+                    {"display": "Brown", "value": "Brown"},
+                    {"display": "Visitor", "value": "Visitor"},
+                    {"display": "Reserved", "value": "Reserved"},
+                    {"display": "Service", "value": "Service"},
+                    {"display": "Park & Ride", "value": "Park & Ride"},
+                    {"display": "Gold/Silver", "value": "Gold/Silver"}
+                  ],
+                  textField: "display",
+                  valueField: "value",
+                  okButtonLabel: "OK",
+                  cancelButtonLabel: "CANCEL",
+                  hintWidget:
+                      const Text("Choose the decals to filter by"),
+                  onSaved: (value) {
+                    setState(() {
+                      _decals = value;
+                    });
+                  },
+                )
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    "${selectedDate.toLocal()}".split(' ')[0],
+                    style: const TextStyle(
+                        fontSize: 30, 
                         fontWeight: FontWeight.bold
                     ),
                   ),
-                )
-              ],
-            ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: Text(
-                selectedTime != null ? selectedTime! : 'Time not selected',
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: ElevatedButton(
-                onPressed: show,
-                child: const Text(
-                  "Select Time",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  ElevatedButton(
+                    onPressed: () => _selectDate(context),
+                    child: const Text(
+                      "Select Date",
+                      style: TextStyle(
+                          color: Colors.white, 
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
                   )
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  selectedTime != null ? selectedTime! : 'Time not selected',
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold
+                  ),
                 ),
               ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(
-                left: 8.0,
-                right: 8.0,
-                top: 32.0,
-                bottom: 0
-              ),
-              child: const Text(
-                "Percent Capacity Filled",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold
+              Container(
+                padding: const EdgeInsets.all(8),
+                child: ElevatedButton(
+                  onPressed: show,
+                  child: const Text(
+                    "Select Time",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold
+                    )
+                  ),
                 ),
               ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(
-                left: 8.0,
-                right: 8.0,
-                top: 0,
-                bottom: 8.0
+              Container(
+                padding: const EdgeInsets.only(
+                  left: 8.0,
+                  right: 8.0,
+                  top: 32.0,
+                  bottom: 0
+                ),
+                child: const Text(
+                  "Percent Capacity Filled",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
               ),
-              child: Slider(
-                value: _sliderValue,
-                min: 0,
-                max: 100,
-                divisions: 10,
-                label: _sliderValue.round().toString(),
-                onChanged: (double value) {
-                  setState(() {
-                    _sliderValue = value;
-                  });
-                },
-              )  
-            ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              child: ElevatedButton(
-                child: Text("Apply"),
-                onPressed: _saveForm,
+              Container(
+                padding: const EdgeInsets.only(
+                  left: 8.0,
+                  right: 8.0,
+                  top: 0,
+                  bottom: 8.0
+                ),
+                child: Slider(
+                  value: _sliderValue,
+                  min: 0,
+                  max: 100,
+                  divisions: 10,
+                  label: _sliderValue.round().toString(),
+                  onChanged: (double value) {
+                    setState(() {
+                      _sliderValue = value;
+                    });
+                  },
+                )  
+              ),
+              Container(
+                padding: const EdgeInsets.only(
+                  left: 8.0,
+                  right: 8.0,
+                  top: 8.0,
+                  bottom: 0
+                ),
+                child: const Text(
+                  "Parking Lot Size",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                child: DropdownButton(
+                  value: lotSize,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      lotSize = newValue!;
+                    });
+                  },
+                  items: <String>['Small', 'Medium', 'Large']
+                    .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                )
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                child: ElevatedButton(
+                  child: Text("Apply"),
+                  onPressed: _saveForm,
+                )
+              ),
+              Container(
+                padding: EdgeInsets.all(16),
+                child: Text(_results),
               )
-            ),
-            Container(
-              padding: EdgeInsets.all(16),
-              child: Text(_results),
-            )
-          ],
+            ],
+          )
         )
       )
     )
